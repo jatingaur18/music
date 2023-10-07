@@ -50,4 +50,25 @@ app.post('/register',(req,res)=>{
 
     return res.redirect('/login');
 })
+app.post('/login',async (req,res)=>{
+
+    var data ={
+        email :req.body.email,
+        password:req.body.password
+    }
+
+    try {
+        const userfind = await db.collection('users').find({}).toArray();
+        user = userfind.find(x => x.email === data.email);
+        if (user === null || user.password !== data.password) {
+            console.log("Invalid email or password");
+        } else {
+            console.log("Login successful");
+        }
+    } catch (err) {
+        console.log("fuck");
+    }
+
+    return res.redirect('/');
+})
 app.listen(process.env.PORT ||3000)
