@@ -10,6 +10,7 @@ const expressLayouts = require('express-ejs-layouts')
 const bodyParser =require("body-parser")
 const indexRouter = require('./routes/index')
 const authRouter = require('./routes/logandsign')
+const homeRouter = require('./routes/home')
 
 app.set('view engine','ejs')
 app.set('views',__dirname + '/views')
@@ -28,7 +29,12 @@ db.on('error',error => console.error(error))
 db.once('open',()=> console.log('Connected to Mongoose'))
 app.use('/',indexRouter)
 app.use('/',authRouter)
+app.use('/',homeRouter)
 
+const currUser={
+    "name":"login",
+    "email":"login"
+}
 
 app.post('/register',(req,res)=>{
     var name= req.body.name;
@@ -63,12 +69,15 @@ app.post('/login',async (req,res)=>{
         if (user === null || user.password !== data.password) {
             console.log("Invalid email or password");
         } else {
+            res.locals.currUser = user;
             console.log("Login successful");
         }
     } catch (err) {
         console.log("fuck");
     }
 
-    return res.redirect('/');
+    return res.redirect('/home');
+
 })
+
 app.listen(process.env.PORT ||3000)
