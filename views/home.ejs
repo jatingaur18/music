@@ -3,18 +3,91 @@
 <H2>!!WELCOME!! ,<%= user.name %></H2>
 <h2>playlists</h2>
 <br>
-<div>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <div >
-            <label for="file" >Choose File</label>
-            <input type="file" name="file" id="file">
-          
-        </div>
-        <input type="submit" value="Submit" class="btn btn-primary btn-block">
-      </form>
-</div>
-<div>
-    audio player
-    <br>
 
-</div>
+<head>
+  
+</head>
+
+<body>
+  <div>
+      <h2>Select Files to Upload To Google Drive</h2>
+      <p style="display: none;"></p>
+      <form>
+          <div class="custom-file-input">
+              <input type="text" name="name" id="name">
+              <select id="cars" name="emotion">
+                <option value="sad">sad</option>
+                <option value="happy">happy</option>
+                <option value="angry">angry</option>
+                <option value="disgust">disgust</option>
+              </select>
+              <input id="fileInput" type="file" name="Files" required multiple />
+              <label for="fileInput" id="fileInputLabel">Select Files</label>
+          </div>
+          <button id="myButton" type="submit">Submit</button>
+      </form>
+  </div>
+<br>
+<br>
+  <div>
+    <button type="button" >
+      <a href="/sad">sad</a> 
+   </button>
+   <button  ><a href="/happy">happy</a></button>
+   <button type="button" >
+    <a href="/angry">angry</a> 
+ </button>
+ <button  ><a href="/disgust">disgust</a></button>
+    
+
+  </div>
+
+</body>
+
+<script>
+  
+
+  document.getElementById("myButton").onclick = function () {
+      this.style.backgroundColor = "red";
+  };
+  
+  var fileInput = document.getElementById('fileInput');
+  var fileInputLabel = document.getElementById('fileInputLabel');
+
+  fileInput.addEventListener('change', function () {
+      if (fileInput.files && fileInput.files.length > 0) {
+          var fileName = '';
+          if (fileInput.files.length === 1) {
+              fileName = fileInput.files[0].name;
+          } else {
+              fileName = fileInput.files.length + ' files selected';
+          }
+          fileInputLabel.textContent = fileName;
+      } else {
+          fileInputLabel.textContent = 'Select Files';
+      }
+  });
+
+
+  const formElem = document.querySelector('form');
+  formElem.addEventListener('submit', async (e) => {
+      console.log("form submitting")
+      e.preventDefault();
+      await fetch('/upload', {
+          method: 'POST',
+          body: new FormData(formElem),
+      }).then(response => {
+          document.querySelector('p').textContent = "Successfully uploaded to drive";
+          document.getElementById("myButton").style.backgroundColor = "green"
+          document.getElementById('fileInputLabel').textContent = "Select Files";
+          document.querySelector('p').style.display = 'block';
+          console.log(response);
+      }).catch(error => {
+          document.querySelector('p').textContent = "Was not uploaded" + error;
+          document.querySelector('p').style.display = 'block';
+          console.error(error);
+      });
+  });
+
+</script>
+

@@ -1,10 +1,16 @@
 const path = require('path');
-const crypto = require('crypto');
+const fs = require('fs');
 const multer = require('multer');
-const { GridFsStorage } = require('multer-gridfs-storage');
-const Grid = require('gridfs-stream');
-const methodOverride = require('method-override');
+const { google } = require('googleapis');
+const { MongoClient, ObjectId } = require('mongodb');
+const stream = require('stream');
+const apikeys = require('./drive_api.json');
+const upload = multer()
 
+const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
+
+
+const KEYFILEPATH = path.join(__dirname, "drive_api.json");
 
 if(process.env.NODE_ENV !== 'production'){
     require('dotenv').config()
@@ -18,9 +24,9 @@ const bodyParser =require("body-parser")
 const indexRouter = require('./routes/index')
 const authRouter = require('./routes/logandsign')
 const homeRouter = require('./routes/home')
+const happyRouter = require('./routes/happy')
 
 app.use(bodyParser.json());
-app.use(methodOverride('_method'));
 
 app.set('view engine','ejs')
 app.set('views',__dirname + '/views')
@@ -40,9 +46,7 @@ db.on('error',error => console.error(error))
 let gfs;
 
 db.once('open',()=>{
-    console.log('Connected to Mongoose'),
-    gfs = Grid(db.db,mongoose.mongo);
-    gfs.collection('songs');
+    console.log('Connected to Mongoose');
 })
 
  
@@ -50,32 +54,12 @@ db.once('open',()=>{
 app.use('/',indexRouter)
 app.use('/',authRouter)
 app.use('/',homeRouter)
+app.use('/',happyRouter)
 
-
-let filen;
-
-const storage = new GridFsStorage({
-    
-    url: 'mongodb+srv://MicroftHolmes:rvq6vjPrtPQSyGk7@cluster0.gq5rvso.mongodb.net/test',
-    file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) {
-          return reject(err);
-        }
-        const filename = buf.toString('hex') + path.extname(file.originalname);
-        const fileInfo = {
-          filename: filename,
-          bucketName: 'songs'
-        };
-        resolve(fileInfo);
-        filen=fileInfo.filename;
-      });
-    });
-  }
+const auth = new google.auth.GoogleAuth({
+  keyFile: KEYFILEPATH,
+  scopes: SCOPES,
 });
-const upload = multer({ storage });
-
 
 const currUser={
     "name":"login",
@@ -126,85 +110,58 @@ app.post('/login',async (req,res)=>{
 
 })
 
-app.post('/upload',upload.single('file'),(req,res)=>{
-    res.json({file: req.file});
-    console.log(filen);
-});
+const song={
+  "user":"--",
+  "name":"--no-name--",
+  "emotion":"--",
+  "id":"--"
+}
 
+app.post("/upload", upload.any(), async (req, res) => {
+  try {
+      //console.log(req.body.name);
+      song.name=req.body.name;
+      song.emotion=req.body.emotion;
+      console.log(req.body);
+      console.log(req.files);
+      const { body, files } = req;
 
-app.get('/files', async (req, res) => {
-    try {
-        const files = await gfs.files.find().toArray();
-        if (!files || files.length === 0) {
-            return res.status(404).json({ err: 'No files exist' });
-        }
-        return res.json(files);
-    } catch (err) {
-        return res.status(500).json({ error: err.message });
-    }
-});
-
-app.get('/files/:filename', async (req, res) => {
-    try {
-        const file = await gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(file);
-                }
-            
-        });
-
-        // Check if file
-        if (!file || file.length === 0) {
-            return res.status(404).json({
-                err: 'No file exists'
-            });
-        }
-
-        // File exists
-        return res.json(file);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            err: 'Internal Server Error'
-        });
-    }
-});
-
-app.get('/image/:filename', async (req, res) => {
-    
-        const file = await gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(file);
-                }
-            
-        });
-
-        // Check if file
-        if (!file || file.length === 0) {
-            return res.status(404).json({
-                err: 'No file exists'
-            });
-        }
-
-       // Check if image
-    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-        // Read output to browser
-        const readstream = gfs.createReadStream(file.filename);
-        readstream.pipe(res);
-      } else {
-        res.status(404).json({
-          err: 'Not an image'
-        });
+      for (let f = 0; f < files.length; f += 1) {
+          await uploadFile(files[f]);
       }
-        
-    
-    
+
+      res.status(200).send("Form Submitted");
+  } catch (f) {
+      res.send(f.message);
+  }
 });
 
+const uploadFile = async (fileObject) => {
+  const bufferStream = new stream.PassThrough();
+  bufferStream.end(fileObject.buffer);
+  const { data } = await google.drive({ version: "v3", auth }).files.create({
+      media: {
+          mimeType: fileObject.mimeType,
+          body: bufferStream,
+      },
+      requestBody: {
+          name: fileObject.originalname,
+          parents: ["17tr91RoUBrN5gLJdzm8zygRoj043__Ep"],
+      },
+      fields: "id,name",
+  });
+  song.id=data.id;
+  song.user=user.name;
+  console.log(`Uploaded file ${data.name} ${data.id}`);
+  console.log(song);
 
+  db.collection('songs').insertOne(song,(err,collection)=>{
+    if(err){
+        console.log("error");
+    }
+    console.log("Record Inserted");
+});
+
+};
 
 app.listen(process.env.PORT ||3001)
