@@ -25,6 +25,7 @@ const indexRouter = require('./routes/index')
 const authRouter = require('./routes/logandsign')
 const homeRouter = require('./routes/home')
 const happyRouter = require('./routes/happy')
+const playerRouter = require('./routes/player')
 
 app.use(bodyParser.json());
 
@@ -43,7 +44,6 @@ const db = mongoose.connection
 db.on('error',error => console.error(error))
 //db.once('open',()=> console.log('Connected to Mongoose'))
 
-let gfs;
 
 db.once('open',()=>{
     console.log('Connected to Mongoose');
@@ -55,7 +55,7 @@ app.use('/',indexRouter)
 app.use('/',authRouter)
 app.use('/',homeRouter)
 app.use('/',happyRouter)
-
+app.use('/',playerRouter)
 const auth = new google.auth.GoogleAuth({
   keyFile: KEYFILEPATH,
   scopes: SCOPES,
@@ -105,7 +105,7 @@ app.post('/login',async (req,res)=>{
     } catch (err) {
         console.log("fuck");
     }
-
+    currUser.name=user.name;
     return res.redirect('/home');
 
 })

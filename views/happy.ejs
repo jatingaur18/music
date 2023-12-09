@@ -1,0 +1,46 @@
+<!-- views/happy.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Songs</title>
+</head>
+<body>
+    <h1>Happy Songs</h1>
+    
+    <% if (happySongs && happySongs.length > 0) { %>
+        <ul>
+            <% happySongs.forEach(song => { %>
+                <li>
+                    <span><%= song.name %></span>
+                    <!-- views/happy.ejs -->
+
+                            <button class="play-button" data-song-id="<%= song.id %>">
+                                <a href="/player?song=<%- encodeURIComponent(JSON.stringify(song.id)) %>">play</a>
+                            </button>
+
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No happy songs found.</p>
+    <% } %>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.play-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Get the song ID from the data attribute
+                    const songId = this.getAttribute('data-song-id');
+                    // Perform any action you want with the song ID, for example, redirect to a play page
+                    console.log('Playing song with ID:', songId);
+                    // You can use window.location.href or any other method to redirect or play the song
+                });
+            });
+        });
+    </script>
+</body>
+</html>

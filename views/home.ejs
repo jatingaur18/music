@@ -1,93 +1,156 @@
-<!-- home.ejs -->
- 
-<H2>!!WELCOME!! ,<%= user.name %></H2>
-<h2>playlists</h2>
-<br>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>book your movie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background-color: rgb(7, 14, 52);
+            color: white;
+            font-family: 'Poppins';
+            
+        }
+        .box{
+            border-radius: 2%;
+            margin: auto;
+            margin-top: 7%;
+            height: 23em;
+            width: 30em;
+            border: 3px solid ;
+            padding: 10px;
+            background-color: rgb(6, 3, 24);
+            text-align: center;
+            color: white;
+            justify-content: center;
+        }
+        .u{
+            font-size: 1.25em;
+            margin: 45px;
+        }
+        .p{
+            font-size: 1.25em;
+            margin: 45px;
+        }
+        input{
+            border-radius: 7px;
+            height: 22px;
+            width: 150px;
+        }
+
+
+    </style>
 </head>
-
 <body>
-  <div>
-      <h2>Select Files to Upload To Google Drive</h2>
-      <p style="display: none;"></p>
-      <form>
-          <div class="custom-file-input">
-              <input type="text" name="name" id="name">
-              <select id="cars" name="emotion">
-                <option value="sad">sad</option>
-                <option value="happy">happy</option>
-                <option value="angry">angry</option>
-                <option value="disgust">disgust</option>
-              </select>
-              <input id="fileInput" type="file" name="Files" required multiple />
-              <label for="fileInput" id="fileInputLabel">Select Files</label>
-          </div>
-          <button id="myButton" type="submit">Submit</button>
-      </form>
-  </div>
-<br>
-<br>
-  <div>
-    <button type="button" >
-      <a href="/sad">sad</a> 
-   </button>
-   <button  ><a href="/happy">happy</a></button>
-   <button type="button" >
-    <a href="/angry">angry</a> 
- </button>
- <button  ><a href="/disgust">disgust</a></button>
-    
+    <header>
+    </header>
+    <main>
+        <H2>HELLO,   <%= user.name %></H2>
+        <br>
+        <form>
+            <div class="custom-file-input">
+                <input type="text" name="name" id="name">
+                <select id="cars" name="emotion">
+                  <option value="sad">sad</option>
+                  <option value="happy">happy</option>
+                  <option value="angry">angry</option>
+                  <option value="disgust">disgust</option>
+                </select>
+                <input id="fileInput" type="file" name="Files" required multiple />
+                <label for="fileInput" id="fileInputLabel">Select Files</label>
+            </div>
+            <button id="myButton" type="submit">Submit</button>
+        </form>
 
-  </div>
+        <div class="box">
+            
 
+
+            <div>
+                <button type="button" >
+                  <a href="/sad">sad</a> 
+               </button>
+               <button  ><a href="/happy">happy</a></button>
+               <button type="button" >
+                <a href="/angry">angry</a> 
+             </button>
+             <button  ><a href="/disgust">disgust</a></button>
+                
+            
+              </div>
+
+
+
+
+
+            <!-- <section class="uap">
+                <form action="/login" method="post">
+                <div class="u">
+                    <label for="name">Email:   </label><br>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="p">
+                    <label for="pass">Password:</label><br>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">login</button> -->
+            </form>
+            </section>
+        </div>
+    </main>
 </body>
-
+</html>                                                   
 <script>
   
 
-  document.getElementById("myButton").onclick = function () {
-      this.style.backgroundColor = "red";
-  };
+    document.getElementById("myButton").onclick = function () {
+        this.style.backgroundColor = "red";
+    };
+    
+    var fileInput = document.getElementById('fileInput');
+    var fileInputLabel = document.getElementById('fileInputLabel');
   
-  var fileInput = document.getElementById('fileInput');
-  var fileInputLabel = document.getElementById('fileInputLabel');
-
-  fileInput.addEventListener('change', function () {
-      if (fileInput.files && fileInput.files.length > 0) {
-          var fileName = '';
-          if (fileInput.files.length === 1) {
-              fileName = fileInput.files[0].name;
-          } else {
-              fileName = fileInput.files.length + ' files selected';
-          }
-          fileInputLabel.textContent = fileName;
-      } else {
-          fileInputLabel.textContent = 'Select Files';
-      }
-  });
-
-
-  const formElem = document.querySelector('form');
-  formElem.addEventListener('submit', async (e) => {
-      console.log("form submitting")
-      e.preventDefault();
-      await fetch('/upload', {
-          method: 'POST',
-          body: new FormData(formElem),
-      }).then(response => {
-          document.querySelector('p').textContent = "Successfully uploaded to drive";
-          document.getElementById("myButton").style.backgroundColor = "green"
-          document.getElementById('fileInputLabel').textContent = "Select Files";
-          document.querySelector('p').style.display = 'block';
-          console.log(response);
-      }).catch(error => {
-          document.querySelector('p').textContent = "Was not uploaded" + error;
-          document.querySelector('p').style.display = 'block';
-          console.error(error);
-      });
-  });
-
-</script>
-
+    fileInput.addEventListener('change', function () {
+        if (fileInput.files && fileInput.files.length > 0) {
+            var fileName = '';
+            if (fileInput.files.length === 1) {
+                fileName = fileInput.files[0].name;
+            } else {
+                fileName = fileInput.files.length + ' files selected';
+            }
+            fileInputLabel.textContent = fileName;
+        } else {
+            fileInputLabel.textContent = 'Select Files';
+        }
+    });
+  
+  
+    const formElem = document.querySelector('form');
+    formElem.addEventListener('submit', async (e) => {
+        console.log("form submitting")
+        e.preventDefault();
+        await fetch('/upload', {
+            method: 'POST',
+            body: new FormData(formElem),
+        }).then(response => {
+            document.querySelector('p').textContent = "Successfully uploaded to drive";
+            document.getElementById("myButton").style.backgroundColor = "green"
+            document.getElementById('fileInputLabel').textContent = "Select Files";
+            document.querySelector('p').style.display = 'block';
+            console.log(response);
+        }).catch(error => {
+            document.querySelector('p').textContent = "Was not uploaded" + error;
+            document.querySelector('p').style.display = 'block';
+            console.error(error);
+        });
+    });
+  
+  </script>                                              
