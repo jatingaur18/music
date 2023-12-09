@@ -22,15 +22,14 @@
         .box{
             border-radius: 2%;
             margin: auto;
-            margin-top: 7%;
-            height: 23em;
+            margin-top: 3%;
+            height: 12em;
             width: 30em;
             border: 3px solid ;
             padding: 10px;
             background-color: rgb(6, 3, 24);
             text-align: center;
             color: white;
-            justify-content: center;
         }
         .u{
             font-size: 1.25em;
@@ -44,51 +43,121 @@
             border-radius: 7px;
             height: 22px;
             width: 150px;
+            margin-top: 5%;
         }
+        .emo .browse{
+            background-color: aliceblue;
+            border-radius: 10px;
+            text-align: center;
+            width: 60px;
+            height: 30px;
+            margin-bottom: 10px;
+            margin-top: 3px;
+        }
+        .myButton {
+            margin-top: 15px;
+            display: inline-block;
+            outline: 0;
+            appearance: none;
+            padding: 0px 12px;
+            border: 0px solid transparent;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            background-color: rgb(9, 128, 76);
+            box-shadow: rgb(19 170 82 / 40%) 0px 2px 3px;
+            color: rgb(255, 255, 255);
+            font-size: 14px;
+            font-weight: 400;
+            height: 36px;
+            transition: all 150ms ease-in-out 0s;
+            :hover {
+                color: rgb(255, 255, 255);
+                background-color: rgb(17, 97, 73);
+                box-shadow: rgb(19 170 82 / 40%) 0px 2px 3px, rgb(195 231 202) 0px 0px 0px 3px;
+            }
 
+        }
+        .sad{
+            border: 3px solid;
+            border-radius: 9%;
+            margin: 1em;
+            height: 12em;
+            width: 12em;
+            /* background-color: #2C345C; */
 
+            background: linear-gradient(45deg , #2C345C,black);
+            border-color: aliceblue;
+        }
+        .happy{
+            border: 3px solid;
+            border-radius: 9%;
+            margin: 1em;
+            height: 12em;
+            width: 12em;
+            background: linear-gradient(45deg , #F8D664,#D198C5FF);
+            border-color: aliceblue;
+        }
+        .angry{
+            border: 3px solid;
+            border-radius: 9%;
+            margin: 1em;
+            height: 12em;
+            width: 12em;
+            border-color: aliceblue;
+            background: linear-gradient(45deg , #63322F,#50435C);
+        }
+        .disgust{
+            border: 3px solid;
+            border-radius: 9%;
+            margin: 1em;
+            height: 12em;
+            border-color: aliceblue;
+            width: 12em;
+            background: linear-gradient(45deg , #63322F,#5C7353);
+        }
+        
+        .playlist{
+            background: linear-gradient(45deg , #020329,#221e2e);;
+            border-color: black;
+            border-radius: 2em;
+            margin: auto;
+            margin-top: 6%;
+            height: 18em;
+            width: 100em;
+            border: 6px solid ;
+            padding: 10px;
+            text-align: center;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <header>
     </header>
     <main>
-        <H2>HELLO,   <%= user.name %></H2>
         <br>
-        <form>
-            <div class="custom-file-input">
-                <input type="text" name="name" id="name">
-                <select id="cars" name="emotion">
-                  <option value="sad">sad</option>
-                  <option value="happy">happy</option>
-                  <option value="angry">angry</option>
-                  <option value="disgust">disgust</option>
-                </select>
-                <input id="fileInput" type="file" name="Files" required multiple />
-                <label for="fileInput" id="fileInputLabel">Select Files</label>
-            </div>
-            <button id="myButton" type="submit">Submit</button>
-        </form>
 
         <div class="box">
             
 
 
-            <div>
-                <button type="button" >
-                  <a href="/sad">sad</a> 
-               </button>
-               <button  ><a href="/happy">happy</a></button>
-               <button type="button" >
-                <a href="/angry">angry</a> 
-             </button>
-             <button  ><a href="/disgust">disgust</a></button>
-                
-            
-              </div>
-
-
-
+            <form>
+                <div class="custom-file-input">
+                    UPLOAD SONGS <br>
+                    <input type="text" name="name" id="name">
+                    <br>
+                    <select class="emo" id="cars" name="emotion">
+                      <option value="sad">  sad</option>
+                      <option value="happy">happy</option>
+                      <option value="angry">angry</option>
+                      <option value="disgust">disgust</option>
+                    </select>
+                    <input class="browse" id="fileInput" type="file" name="Files" required multiple />
+                    <label for="fileInput" id="fileInputLabel"></label>
+                </div>
+                <button class="myButton" id="myButton" type="submit">Submit</button>
+            </form>
 
 
             <!-- <section class="uap">
@@ -104,6 +173,21 @@
                 <button type="submit">login</button> -->
             </form>
             </section>
+
+
+            
+        </div>
+        <div class="playlist">
+
+            <div>
+                <div style="font-size: 30px;">PLAYLISTS</div> <br>
+                <button class="sad" ><a style="  text-decoration: none; color:azure;font-size: 30px;" href="/sad">sad</a></button>
+                <button class="happy"><a style="  text-decoration: none; color:azure;font-size: 30px;"href="/happy">happy</a></button>
+                <button class="angry"><a style="  text-decoration: none; color:azure;font-size: 30px;"href="/angry">angry</a> </button>
+                <button class="disgust"><a style="  text-decoration: none; color:azure;font-size: 30px;"href="/disgust">disgust</a></button>
+                
+            
+              </div>
         </div>
     </main>
 </body>
@@ -154,3 +238,7 @@
     });
   
   </script>                                              
+
+
+
+

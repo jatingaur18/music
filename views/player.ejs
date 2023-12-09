@@ -6,12 +6,50 @@
     <title>login</title>
 </head>
 
+<style>
+    *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background-color: rgb(7, 14, 52);
+            color: white;
+            font-family: 'Poppins';
+            
+        }
+    .image{
+        background: linear-gradient(45deg , #020329,#221e2e);;
+        border-color: black;
+        border-radius: 2em;
+        height: 20em;
+        width: 20em;
+        margin-left: 40em;
+        margin-bottom: 5em;
+        background-image: url(https://source.unsplash.com/random/?music,song);
+        background-size: cover;
+      }
+
+    .player{
+            margin: auto;
+            margin-top: 6%;
+            height: 18em;
+            width: 100em;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            align-items: center;
+
+    }
+</style>
 <html>
+  <div class="player">
 
-<audio style="border:10px solid lightsalmon;
-              border-radius: 50px;"
-       controls>
-    <source src="https://docs.google.com/uc?export=download&id=<%=song%>">
-  </audio>
+    <div class="image">
 
+    </div>
+
+    <audio style="border:10px solid lightsalmon; border-radius: 50px;" controls>
+      <source src="https://docs.google.com/uc?export=download&id=<%=song%>">
+    </audio>
+  </div>
 </html>

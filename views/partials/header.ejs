@@ -4,8 +4,9 @@
     </div>
     <div class="right">
             <ul>
-                <li><a href="login.html"><%=user.name || "login" %></a></li>
+                <%if(user.name==="login"){%>
                 <li><a href="signup.html">Sign Up</a></li>
+                <%}%>
                 <li><a href="movieb.html"><%=user.name %></a></li>
             </ul>
         

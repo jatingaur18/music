@@ -25,6 +25,9 @@ const indexRouter = require('./routes/index')
 const authRouter = require('./routes/logandsign')
 const homeRouter = require('./routes/home')
 const happyRouter = require('./routes/happy')
+const angryRouter = require('./routes/angry')
+const disgustRouter = require('./routes/disgust')
+const sadRouter = require('./routes/sad')
 const playerRouter = require('./routes/player')
 
 app.use(bodyParser.json());
@@ -56,6 +59,9 @@ app.use('/',authRouter)
 app.use('/',homeRouter)
 app.use('/',happyRouter)
 app.use('/',playerRouter)
+app.use('/',angryRouter)
+app.use('/',disgustRouter)
+app.use('/',sadRouter)
 const auth = new google.auth.GoogleAuth({
   keyFile: KEYFILEPATH,
   scopes: SCOPES,

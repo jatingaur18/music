@@ -40,9 +40,6 @@
             color: white;
             text-align: center;
         }
-        div.scroll {
-        overflow: auto;
-      }
         .song{
             display: flex;
             height: 2em;
@@ -73,13 +70,11 @@
 <body>
     <main>
         <div class="box">
-            <h1>HAPPY SONGS</h1>
+            <h1>ANGRY SONGS</h1>
 
-             <% if (happySongs && happySongs.length > 0) { %>
-                <div class="scroll">
+             <% if (angrySongs && angrySongs.length > 0) { %>
         <ul>
-            <% happySongs.forEach(song => { %>
-                
+            <% angrySongs.forEach(song => { %>
                 <li>
                     <div class="song">
                         <a href="/player?song=<%- encodeURIComponent(JSON.stringify(song.id)) %>"> <img style="height: 30px; width: 30px; margin-top: 10px; margin-left: 10px;margin-right: 5em;" src="https://drive.google.com/uc?export=view&id=1jDkXUjAJBxk_OcqtxUcbsp8VOQgpX3Mg" alt="not "></a>
@@ -90,12 +85,10 @@
                             
 
                 </li>
-
             <% }); %>
         </ul>
-    </div>
     <% } else { %>
-        <p>No happy songs found.</p>
+        <p>No ANGRY songs found.</p>
     <% } %>
 
         </div>
