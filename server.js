@@ -6,7 +6,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 const stream = require('stream');
 const apikeys = require('./drive_api.json');
 const upload = multer()
-
+const { spawn } = require('child_process');
 const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 
 
@@ -156,6 +156,8 @@ const uploadFile = async (fileObject) => {
       },
       fields: "id,name",
   });
+
+  const emo = await executePython('example_script.py',[data.id]);
   song.id=data.id;
   song.user=user.name;
   console.log(`Uploaded file ${data.name} ${data.id}`);
@@ -169,5 +171,37 @@ const uploadFile = async (fileObject) => {
 });
 
 };
+
+const pythonProcess = spawn('python', [path.join(__dirname, 'example_script.py')]);
+  
+const executePython = async (script, arg) => {
+    const arguments = arg.toString();
+
+    const py = spawn("python", [script, arguments]);
+
+    const result = await new Promise((resolve, reject) => {
+        let output;
+
+        // Get output from python script
+        py.stdout.on('data', (data) => {
+            output = data.toString();
+        });
+
+        // Handle erros
+        py.stderr.on("data", (data) => {
+            console.error(`[python] Error occured: ${data}`);
+            reject(`Error occured in ${script}`);
+        });
+
+        py.on("exit", (code) => {
+            console.log(`Child process exited with code ${code}`);
+            resolve(output);
+        });
+    });
+
+    return result;
+}
+
+  
 
 app.listen(process.env.PORT ||3001)
