@@ -158,6 +158,7 @@ const uploadFile = async (fileObject) => {
   });
 
   const emo = await executePython('example_script.py',[data.id]);
+  console.log(emo);
   song.id=data.id;
   song.user=user.name;
   console.log(`Uploaded file ${data.name} ${data.id}`);
@@ -172,7 +173,7 @@ const uploadFile = async (fileObject) => {
 
 };
 
-const pythonProcess = spawn('python', [path.join(__dirname, 'example_script.py')]);
+// const pythonProcess = spawn('python', [path.join(__dirname, 'example_script.py')]);
   
 const executePython = async (script, arg) => {
     const arguments = arg.toString();
