@@ -52,8 +52,16 @@ This website employs machine learning to analyze the emotional content of upload
      DATABASE_URL=your_mongodb_connection_url
      PORT=your_preferred_port_number
      ```
+4. Python libs
+   - librosa 0.8.1
+   - matplotlib 3.4.3
+   - numpy 1.21.2
+   - Pillow 8.3.2
+   - gdown 3.13.0
+   - tensorflow 2.5.1
+   - keras 2.4.3
 
-4. Run the application:
+5. Run the application:
    ```bash
    npm run devStart
    ```
