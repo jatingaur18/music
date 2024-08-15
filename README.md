@@ -13,7 +13,7 @@ Welcome to the Music Emotion Prediction website! This platform allows users to u
 
 ## Introduction
 
-This website employs machine learning to analyze the emotional content of uploaded songs. Users can register, log in, upload their favorite songs, and listen th=hem when ever the want. The system predicts the emotion of each song and organizes them into playlists based on their emotional characteristics. Users can access and listen to their playlists whenever they want.
+This website employs machine learning to analyze the emotional content of uploaded songs. Users can register, log in, upload their favorite songs, and listen them when ever they want. The system predicts the emotion of each song and organizes them into playlists based on their emotional characteristics. Users can access and listen to their playlists whenever they want.
 
 ## Features
 
